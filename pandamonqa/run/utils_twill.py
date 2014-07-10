@@ -53,6 +53,24 @@ def clicker_generic_override_PAGE_ADDRESS(config_file, page_address):
     return errorlist
 
 
+def print_errors(errors_list):
+    ### loop over errors in errors_list
+    ### for each entry print it
+    ## for loop in python
+    ## print entry
+    print "Printing error summary: "
+    for errors in errors_list:
+        try:
+            error_tuple = errors[0]
+        except:
+            ### TODO: handle this exception later
+            pass
+
+        print "Page address:", error_tuple[0]
+        print "String:", error_tuple[1]
+        print "Message:", error_tuple[2]
+        print
+
 
 
 
@@ -72,8 +90,7 @@ def clicker_generic_override_PAGE_ADDRESS_loop_categories(clicker_site_config, c
         if error != []:
             errors.append(error)
     ### summary;
-    print errors
-
+    print_errors(errors)
 
 
 

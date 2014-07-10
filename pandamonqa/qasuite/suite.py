@@ -66,13 +66,31 @@ class QASuite(object):
         printv(u'###### %s() OUT' % (inspect.stack()[0][3]), VERB_STANDARD)
 
         return config
+    def print_stack(self,stack_list):
+        ### loop over errors in errors_list
+        ### for each entry print it
+        ## for loop in python
+        ## print entry
+        """
+            for each stack element
+                print [1], [2], [3]
 
+
+        """
+        print "Printing stack element list: "
+        for stack_element in stack_list:
+
+            print stack_element[1], ":", stack_element[2], " ", stack_element[3]
+            print  "%s:%s %s" %( stack_element[1],  stack_element[2], stack_element[3])
 
     def check_version(self):
         """
             Check the page source, look for the version number.
         """
         printv(u'###### %s() IN' % (inspect.stack()[0][3]), VERB_STANDARD)
+#         print inspect.stack()
+#         print inspect.stack()[0]
+        self.print_stack(inspect.stack())
         twill.commands.agent(self.PAGE_BROWSER)
         twill.commands.go(self.PAGE_ADDRESS)
         isOK = False
@@ -86,14 +104,19 @@ class QASuite(object):
             list_errors.append((self.PAGE_ADDRESS, self.PAGE_VERSION, result))
 
 
-        try:
-            twill.commands.find(self.PAGE_VERSION)
-        except twill.errors.TwillAssertionError:
-            result = 'Expected string ' + self.PAGE_VERSION + ' which is not there.'
-#            raise twill.errors.TwillAssertionError(result)
-            list_errors.append((self.PAGE_ADDRESS, self.PAGE_VERSION, result))
+        if isOK:
+            try:
+                twill.commands.find(self.PAGE_VERSION)
+            except twill.errors.TwillAssertionError:
+                result = 'Expected string ' + self.PAGE_VERSION + ' which is not there.'
+#                 raise twill.errors.TwillAssertionError(result)
+                list_errors.append((self.PAGE_ADDRESS, self.PAGE_VERSION, result))
 
-        printv('errors found: %s' %(list_errors))
+
+
+
+#        printv('errors found: %s' %(list_errors))
         printv(u'###### %s() OUT' % (inspect.stack()[0][3]), VERB_STANDARD)
+
         return list_errors
 
