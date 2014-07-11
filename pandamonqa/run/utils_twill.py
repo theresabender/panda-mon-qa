@@ -50,7 +50,8 @@ def clicker_generic_override_PAGE_ADDRESS(config_file, page_address):
         a.PAGE_ADDRESS = page_address
         a.PAGE_VERSION = QUICK_PAGE_VERSION
     errorlist = a.check_version()
-    return errorlist
+    anchorlist = a.get_all_anchors()
+    return (errorlist, anchorlist,)
 
 
 def print_errors(errors_list):
@@ -70,7 +71,17 @@ def print_errors(errors_list):
         print "String:", error_tuple[1]
         print "Message:", error_tuple[2]
         print
+#         print "Anchors:", get_all_anchors
 
+def print_anchors(anchors_list):
+    ### loop over errors in errors_list
+    ### for each entry print it
+    ## for loop in python
+    ## print entry
+    if len(anchors_list):
+        print "Printing anchor summary: "
+        for anchor in anchors_list:
+            print anchor
 
 
 
@@ -84,13 +95,18 @@ def get_list_URL(category_list_config):
 def clicker_generic_override_PAGE_ADDRESS_loop_categories(clicker_site_config, category_list_config):
     category_list_URL = get_list_URL(category_list_config)
     errors = []
+    anchors = []
     for category_page in category_list_URL:
-        error = clicker_generic_override_PAGE_ADDRESS(clicker_site_config, category_page)
+        error, anchor = clicker_generic_override_PAGE_ADDRESS(clicker_site_config, category_page)
         #print category_page, error
         if error != []:
             errors.append(error)
+        if anchor is not None:
+            anchors.append(anchor)
+
     ### summary;
     print_errors(errors)
+    print_anchors(anchors)
 
 
 

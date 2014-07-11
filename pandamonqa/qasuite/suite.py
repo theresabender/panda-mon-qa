@@ -20,6 +20,24 @@ VERB_STANDARD = 1
 VERB_HIGH = 2
 verbosity = 2
 
+def get_all_anchors(self):
+    twill.commands.agent(self.PAGE_BROWSER)
+    twill.commands.go(self.PAGE_ADDRESS)
+    twill.commands.browser.get_html()
+    anchors = page_html.findAll('a')
+
+    print 'anchors'
+    for anchors in page_html.findAll('a'):
+
+        if isOK:
+            try:
+                twill.commands.find(self.PAGE_VERSION)
+            except twill.errors.TwillAssertionError:
+                result = 'Expected string ' + self.PAGE_VERSION + ' which is not there.'
+    #             raise twill.errors.TwillAssertionError(result)
+                list_errors.append((self.PAGE_ADDRESS, self.PAGE_VERSION, result))
+
+            print 'anchors', page_html.findAll[0]
 
 def printv(text, verb=VERB_HIGH):
     if verb <= verbosity:
@@ -41,6 +59,36 @@ class QASuite(object):
 #    STATICS = []
 #    STATIC_SERVER = ''
 
+
+
+    def get_all_anchors(self):
+        twill.commands.agent(self.PAGE_BROWSER)
+        twill.commands.go(self.PAGE_ADDRESS)
+        isOK = False
+        list_errors=[]
+        try:
+            twill.commands.code('200')
+            isOK = True
+        except twill.errors.TwillAssertionError:
+            result = 'Page status code ' + self.PAGE_ADDRESS + ' was ' + str(twill.commands.browser.get_code()) + '.'
+            #raise twill.errors.TwillAssertionError(result)
+            list_errors.append((self.PAGE_ADDRESS, self.PAGE_VERSION, result))
+
+        if isOK:
+            page_html = BeautifulSoup(twill.commands.browser.get_html())
+            anchors = page_html.findAll('a')
+
+            print 'anchors'
+            for anchor in anchors:
+
+                try:
+                    twill.commands.find(self.PAGE_VERSION)
+                except twill.errors.TwillAssertionError:
+                    result = 'Expected string ' + self.PAGE_VERSION + ' which is not there.'
+        #             raise twill.errors.TwillAssertionError(result)
+                    list_errors.append((self.PAGE_ADDRESS, self.PAGE_VERSION, result))
+
+                print 'anchor', anchor
 
     def configure(self, config_file):
         """
