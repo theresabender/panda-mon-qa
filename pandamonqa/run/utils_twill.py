@@ -51,7 +51,10 @@ def clicker_generic_override_PAGE_ADDRESS(config_file, page_address):
         a.PAGE_VERSION = QUICK_PAGE_VERSION
     errorlist = a.check_version()
     anchorlist = a.get_all_anchors()
-    return (errorlist, anchorlist,)
+    print anchorlist
+    clickable_anchor_list = a.get_clickable_anchors(anchorlist)
+    print clickable_anchor_list
+    return (errorlist, anchorlist, clickable_anchor_list,)
 
 
 def print_errors(errors_list):
@@ -83,8 +86,6 @@ def print_anchors(anchors_list):
         for anchor in anchors_list:
             print anchor
 
-
-
 def get_list_URL(category_list_config):
     config=open(category_list_config, 'r')
     list_category_URL=config.read().split('\n')
@@ -96,17 +97,21 @@ def clicker_generic_override_PAGE_ADDRESS_loop_categories(clicker_site_config, c
     category_list_URL = get_list_URL(category_list_config)
     errors = []
     anchors = []
+    clickable_anchors = []
     for category_page in category_list_URL:
-        error, anchor = clicker_generic_override_PAGE_ADDRESS(clicker_site_config, category_page)
+        error, anchor, clickable_anchor_list = clicker_generic_override_PAGE_ADDRESS(clicker_site_config, category_page)
         #print category_page, error
         if error != []:
             errors.append(error)
         if anchor is not None:
             anchors.append(anchor)
+        if clickable_anchor_list != []:
+            clickable_anchors.extend(clickable_anchor_list)
 
     ### summary;
     print_errors(errors)
-    print_anchors(anchors)
+#     print_anchors(anchors)
+    print_anchors(clickable_anchors)
 
 
 

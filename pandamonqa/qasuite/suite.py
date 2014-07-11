@@ -20,24 +20,7 @@ VERB_STANDARD = 1
 VERB_HIGH = 2
 verbosity = 2
 
-def get_all_anchors(self):
-    twill.commands.agent(self.PAGE_BROWSER)
-    twill.commands.go(self.PAGE_ADDRESS)
-    twill.commands.browser.get_html()
-    anchors = page_html.findAll('a')
 
-    print 'anchors'
-    for anchors in page_html.findAll('a'):
-
-        if isOK:
-            try:
-                twill.commands.find(self.PAGE_VERSION)
-            except twill.errors.TwillAssertionError:
-                result = 'Expected string ' + self.PAGE_VERSION + ' which is not there.'
-    #             raise twill.errors.TwillAssertionError(result)
-                list_errors.append((self.PAGE_ADDRESS, self.PAGE_VERSION, result))
-
-            print 'anchors', page_html.findAll[0]
 
 def printv(text, verb=VERB_HIGH):
     if verb <= verbosity:
@@ -88,7 +71,26 @@ class QASuite(object):
         #             raise twill.errors.TwillAssertionError(result)
                     list_errors.append((self.PAGE_ADDRESS, self.PAGE_VERSION, result))
 
-                print 'anchor', anchor
+#                 print 'anchor', anchor
+            return anchors
+        return []
+
+    def get_clickable_anchors(self, anchors):
+
+        clickable_anchors = []
+        print anchors, self.PAGE_ADDRESS
+        for anchor in anchors:
+            anchor_href=''
+            if anchor is not None:
+                try:
+                    anchor_href=anchor['href']
+                except:
+                    pass
+            if (re.match('http', anchor_href)):
+                clickable_anchors.append(anchor_href)
+        return clickable_anchors
+
+
 
     def configure(self, config_file):
         """
